@@ -13,6 +13,24 @@ def negative(image):
     negative=negative.astype("uint8")
     return negative
 
+def brightening(image):
+    shape = len(image.shape)
+    if shape==3:
+        image = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
+    y, x = image.shape
+    bright = np.zeros( (y,x), dtype="uint8" )
+    for i in range(y):
+        for j in range(x):
+            temp = image[i,j] + 100
+            if (temp<0):
+                bright[i,j] = 0
+            elif (temp>255):
+                bright[i,j] = 255
+            else:
+                bright[i,j] = temp
+    bright=bright.astype("uint8")
+    return bright
+
 def get_filtered_image(image, action):
     # img = cv2.cvtColor(image, cv2.COLOR)
     if action == 'NO_FILTER':
@@ -23,7 +41,7 @@ def get_filtered_image(image, action):
     elif action == 'NEGATIVE':
         filtered = negative(image)
     elif action == 'BRIGHTENING':
-        pass
+        filtered = brightening(image)
     else:
         pass
 
