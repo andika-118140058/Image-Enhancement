@@ -39,20 +39,19 @@ def boolean(image):
     notBooleanImage = cv2.bitwise_not(biner)
     return 
     
-def translation(image):
+def rotation(image):
     shape = len(image.shape)
     if shape==3:
         image = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
     y, x = image.shape
-    trans = np.zeros( (y,x), dtype="uint8" )
+    rotate = np.zeros( (x,y), dtype="uint8" )
     for i in range(y):
+        k = x-1
         for j in range(x):
-            if (i+10>=y or j+10>=x or i+10<0 or j+10<0):
-                trans[i,j]=0
-            else:
-                trans[i,j]=image[i+10,j+10]
-    trans=trans.astype("uint8")
-    return trans
+            rotate[k,i]=image[i,j]
+            k-=1
+    rotate=rotate.astype("uint8")
+    return rotate
 
 def arithmetic(image):
     shape = len(image.shape)
@@ -85,7 +84,7 @@ def get_filtered_image(image, action):
     elif action == 'BOOLEAN':
         filtered = boolean(image)
     elif action == 'GEOMETRI':
-        filtered = translation(image)
+        filtered = rotation(image)
     elif action == 'ARITMETIKA':
         filtered = arithmetic(image)
     else:
