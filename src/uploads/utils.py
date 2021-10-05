@@ -31,6 +31,14 @@ def brightening(image):
     bright=bright.astype("uint8")
     return bright
 
+def boolean(image):
+    shape = len(image.shape)
+    if shape==3:
+        image = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
+    thresh, biner = cv2.threshold(image, 125, 255, cv2.THRESH_BINARY)
+    notBooleanImage = cv2.bitwise_not(biner)
+    return notBooleanImage
+
 def get_filtered_image(image, action):
     # img = cv2.cvtColor(image, cv2.COLOR)
     if action == 'NO_FILTER':
@@ -42,6 +50,8 @@ def get_filtered_image(image, action):
         filtered = negative(image)
     elif action == 'BRIGHTENING':
         filtered = brightening(image)
+    elif action == 'BOOLEAN':
+        filtered = boolean(image)
     else:
         pass
 
